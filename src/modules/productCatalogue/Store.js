@@ -1,10 +1,15 @@
 import { observable, computed } from "mobx";
+import createProduct from "./createProduct";
 
 class Store {
   @observable
   isCreateModalOpen = false;
   @observable
   productDataSource = [];
+  @observable
+  count = 0;
+  @observable
+  selectedProductsList = [];
 
   @computed
   get sortedProductList() {
@@ -23,11 +28,24 @@ class Store {
     e.preventDefault();
     form.validateFields((err, values) => {
       if (!err) {
+        this.count++;
+        values.id = this.count;
         this.productDataSource.push(values);
         form.resetFields();
         this.isCreateModalOpen = false;
       }
     });
+  };
+
+  onProductSelect = product => {
+    if (this.selectedProductsList.findIndex(p => p.id === product.id) > -1) {
+      this.selectedProductsList = this.selectedProductsList.filter(p => {
+       return  p.id !== product.id;
+      });
+    } else {
+
+      this.selectedProductsList.push(product);
+    }
   };
 }
 export default new Store();

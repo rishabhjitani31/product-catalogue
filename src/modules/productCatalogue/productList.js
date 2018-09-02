@@ -1,10 +1,12 @@
 import React from "react";
-import { Card } from "antd";
+import { Card, Table } from "antd";
 import { observer } from "mobx-react";
 import { toJS } from "mobx";
+import columns from "./columns";
 import store from "./Store";
 
 const { Meta } = Card;
+
 const ProductList = props => {
   return (
     <div>
@@ -13,6 +15,14 @@ const ProductList = props => {
           return (
             product.image && (
               <Card
+                className={
+                  store.selectedProductsList.findIndex(
+                    p => p.id === product.id
+                  ) > -1
+                    ? "highlight"
+                    : ""
+                }
+                onClick={() => store.onProductSelect(product)}
                 key={i}
                 hoverable
                 style={{ width: 240, margin: "1%" }}
@@ -36,7 +46,14 @@ const ProductList = props => {
           );
         })}
       </div>
-      <div />
+      <div>
+        {store.selectedProductsList.slice().length > 0 && (
+          <Table
+            dataSource={store.selectedProductsList.slice()}
+            columns={columns()}
+          />
+        )}
+      </div>
     </div>
   );
 };
