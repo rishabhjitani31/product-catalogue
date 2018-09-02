@@ -1,0 +1,10 @@
+
+.flex {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.ant-layout-content {
+  margin-left: 11%;
+  margin-top: 2%;
+}
